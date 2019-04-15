@@ -12,7 +12,7 @@ var knightStepX = 0;
 var knightStepY = 0;
 
 draw_board();
-set_knight();
+// set_knight();
 
 // while (knightX >= 0 || knightY >= 0) {
 //     set_knight();

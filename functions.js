@@ -19,8 +19,8 @@ function draw_board () {
         }
         board += "</tr>";
     }
-        board += "</table>";
-        gameField.innerHTML = board;
+    board += "</table><br/><br/><button onclick='set_knight()'>Move knight</button>";
+    gameField.innerHTML = board;
 }
 
 function set_knight () {
