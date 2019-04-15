@@ -4,24 +4,15 @@
     <meta charset="UTF-8">
     <title>ss9_test_taoOBanCo</title>
 </head>
-<body>
-<script>
-    var table = "<table width = '300' cellspacing = '0' cellpadding='3' border = '1'>";
-    var n = 0;
-    var n1 = 1;
-    var temp;
-    for (i =1; i <= 10; i++) {
-        table += "<tr>";
-        for (j = 1; j <= 10; j++) {
-            temp = n1;
-            n1 += n;
-            n = temp;
-            table += "<td>" + n1 + "</td>"
-        }
-        table += "<tr>";
-    }
-    table += "</table>";
-    document.write(table);
-</script>
+<body leftmargin="150" topmargin="75">
+
+
+<h>A KNIGHT CHESS GAME</h>
+<br/>
+<p id = "gameField"></p>
+
+<script src = functions.js></script>
+<script src = main.js></script>
+
 </body>
 </html>
