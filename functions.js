@@ -8,6 +8,8 @@ var isSquare = true;
 var square;
 var knightX;
 var knightY;
+var currentKnightX = -1;
+var currentKnightY = -1;
 var knightSteps = [
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
@@ -18,7 +20,6 @@ var knightSteps = [
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0]
 ];
-
 function turn_square_black_white () {
     isSquare = !isSquare;
     if (isSquare) {
@@ -27,23 +28,13 @@ function turn_square_black_white () {
         square = white;
     }
 }
-
 function draw_board () {
-    board += "<tr>" +
-        "<td></td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp1</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp2</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp3</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp4</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp5</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp6</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp7</td>" +
-        "<td>&nbsp&nbsp&nbsp&nbsp8</td>" +
-        "</tr>"
-    for (i = 0; i < 8; i++) {
+    board += "<tr align='center'><td></td><td>1</td><td>2</td><td>3</td> <td>4</td>" +
+        "<td>5</td><td>6</td><td>7</td><td>8</td></tr>"
+    for (let i = 0; i < 8; i++) {
         board += "<tr>" + "<td>" + (i + 1) + "&nbsp&nbsp&nbsp" + "</td>";
         isSquare = !isSquare;
-        for (j = 0; j < 8; j++) {
+        for (let j = 0; j < 8; j++) {
 
             turn_square_black_white()
             if (j == knightX && i == knightY) {
@@ -59,11 +50,90 @@ function draw_board () {
     board += "</table><br/><br/><button onclick='set_knight()'>Set knight</button><br/><br/>";
     gameField.innerHTML = board;
 }
-
+function check_move () {
+    if (
+        (!(currentKnightX == -1 && currentKnightY == -1) &&
+        !(Math.abs(currentKnightX - knightX) == 1 && Math.abs(currentKnightY - knightY) == 2) &&
+        !(Math.abs(currentKnightX - knightX) == 2 && Math.abs(currentKnightY - knightY) == 1)) ||
+        (currentKnightX - knightX == 0 && currentKnightY - knightY == 0)
+    ) {
+        return true;
+    } else return false;
+}
 function set_knight () {
-    knightX = Number(prompt("Please input X for Knight.")) - 1;
-    knightY = Number(prompt("Please input Y for Knight.")) - 1;
+    do {
+        knightX = Number(prompt("Please input X for Knight.")) - 1;
+        knightY = Number(prompt("Please input Y for Knight.")) - 1;
+    } while (
+        check_move()
+        )
     board = "<table width = '300' cellspacing = '0' cellpadding='0' border = '0'>";
     draw_board();
     knightSteps[knightX][knightY] = 1;
+    currentKnightX = knightX;
+    currentKnightY = knightY;
+    if (check_win()) {
+        alert("win!");
+    }
+}
+function check_win () {
+    var checkWin = false;
+    var checkX1 = (knightX - 1 >= 1 && knightX - 1 <= 8)? knightX - 1 : '';
+    var checkX2 = (knightX + 1 >= 1 && knightX + 1 <= 8)? knightX + 1 : '';
+    var checkX3 = (knightX - 2 >= 1 && knightX - 2 <= 8)? knightX - 2 : '';
+    var checkX4 = (knightX + 2 >= 1 && knightX + 2 <= 8)? knightX + 2 : '';
+    var checkY1 = (knightY - 1 >= 1 && knightY - 1 <= 8)? knightY - 1 : '';
+    var checkY2 = (knightY + 1 >= 1 && knightY + 1 <= 8)? knightY + 1 : '';
+    var checkY3 = (knightY - 2 >= 1 && knightY - 2 <= 8)? knightY - 2 : '';
+    var checkY4 = (knightY + 2 >= 1 && knightY + 2 <= 8)? knightY + 2 : '';
+
+    if (checkX1 != '') {
+        if (checkY3 != '') {
+            if (knightSteps[checkX1][checkY3] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+        if (checkY4 != '') {
+            if (knightSteps[checkX1][checkY4] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+    }
+    if (checkX2 != '') {
+        if (checkY3 != '') {
+            if (knightSteps[checkX2][checkY3] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+        if (checkY4 != '') {
+            if (knightSteps[checkX2][checkY4] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+    }
+    if (checkX3 != '') {
+        if (checkY1 != '') {
+            if (knightSteps[checkX3][checkY1] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+        if (checkY2 != '') {
+            if (knightSteps[checkX3][checkY2] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+    }
+    if (checkX4 != '') {
+        if (checkY1 != '') {
+            if (knightSteps[checkX4][checkY1] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+        if (checkY2 != '') {
+            if (knightSteps[checkX4][checkY2] == 1) {
+                checkWin = true;
+            } else checkWin = false;
+        }
+    }
+    return checkWin;
 }
