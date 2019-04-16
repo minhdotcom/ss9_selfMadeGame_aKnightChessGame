@@ -2,8 +2,7 @@ var knight = "<img src = 'img/knight.png' width='40'></img>";
 var knightStep = "<img src = 'img/knightStep.png' width='40'></img>";
 var black = "<img src = 'img/blackSquare.png' width='40'></img>";
 var white = "<img src = 'img/whiteSquare.jpg' width='40'></img>";
-var gameField = document.getElementById("gameField");
-var board = "<table width = '300' cellspacing = '0' cellpadding='0' border = '0'>";
+var isPlayer1 = true;
 var isSquare = true;
 var square;
 var knightX;
@@ -20,6 +19,10 @@ var knightSteps = [
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0]
 ];
+
+function turn_player () {
+    isPlayer1 = !isPlayer1;
+}
 function turn_square_black_white () {
     isSquare = !isSquare;
     if (isSquare) {
@@ -29,6 +32,10 @@ function turn_square_black_white () {
     }
 }
 function draw_board () {
+    var gameField = document.getElementById("gameField");
+    var board = "<table width = '300' cellspacing = '0' cellpadding='0' border = '0'>";
+    var player = document.getElementById("player");
+    player.innerHTML = isPlayer1 ? "Player 1 's turn" : "Player 2 's turn";
     board += "<tr align='center'><td></td><td>1</td><td>2</td><td>3</td> <td>4</td>" +
         "<td>5</td><td>6</td><td>7</td><td>8</td></tr>"
     for (let i = 0; i < 8; i++) {
@@ -61,19 +68,21 @@ function check_move () {
     } else return false;
 }
 function set_knight () {
+    turn_player();
+    console.log(isPlayer1);
     do {
         knightX = Number(prompt("Please input X for Knight.")) - 1;
         knightY = Number(prompt("Please input Y for Knight.")) - 1;
     } while (
         check_move()
         )
-    board = "<table width = '300' cellspacing = '0' cellpadding='0' border = '0'>";
+    // board = "<table width = '300' cellspacing = '0' cellpadding='0' border = '0'>";
     draw_board();
     knightSteps[knightX][knightY] = 1;
     currentKnightX = knightX;
     currentKnightY = knightY;
     if (check_win()) {
-        alert("win!");
+        alert(isPlayer1 ? "Player 2" : "Player 1" + " won!");
     }
 }
 function check_win () {
